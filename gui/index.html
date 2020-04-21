@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Ruby based RSA</title>
+  <style>{styles}</style>
+  <script src="https://code.jquery.com/jquery-3.5.0.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>RSA Cipher</h1>
+    <div class="grid">
+      <div class="key response">{public_key}</div>
+      <div class="key response">{private_key}</div>
+    </div>
+    <textarea class="message" placeholder="Type here your message..."></textarea>
+    <div id="response" class="response"></div>
+    <div class="grid">
+      <button onclick="encrypt()">Encrypt</button>
+      <button onclick="decrypt()">Decrypt</button>
+    </div>
+    <button onclick="regenerate()">Regenerate keys</button>
+  </div>
+  <script>
+    const encrypt = () => {
+      let message = $('.message').val()
+      $.ajax({
+        url: `http://localhost:8888/encrypt?message=${message}`,
+      }).done(function(res) {
+        $('#response').html(res)
+      });
+    }
+    const decrypt = () => {
+      let message = $('.message').val()
+      $.ajax({
+        url: `http://localhost:8888/decrypt?message=${message}`,
+      }).done(function(res) {
+        $('#response').html(res)
+      });
+    }
+    const regenerate = () => {
+      $.ajax({
+        url: `http://localhost:8888/regenerate`,
+      }).done(function(res) {
+        let new_keys = res.split('|')
+        $('.key')[0].innerHTML = new_keys[0]
+        $('.key')[1].innerHTML = new_keys[1]
+      });
+    }
+  </script>
+  <style>
+
+  </style>
+</body>
+</html>
