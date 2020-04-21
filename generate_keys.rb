@@ -45,10 +45,12 @@ def generate_keys
     end
   end
   init
+
+  Dir.mkdir("keys") unless File.exists?("keys")
   File.open("./keys/public.key", "w") {|f| f.write("#{@e},#{@n}") }
   File.open("./keys/private.key", "w") {|f| f.write("#{@d},#{@n}") }
   puts "Keys are generated: public.key, private.key"
   "#{@e},#{@n}|#{@d},#{@n}"
 end
 # Uncomment to work from terminal
-# generate_keys
+generate_keys
